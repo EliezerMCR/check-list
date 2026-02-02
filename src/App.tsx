@@ -1,6 +1,7 @@
 import './App.css';
 import { Header } from './components/layout/Header';
 import { CheckListCard } from './components/checklist/CheckListCard';
+import { AddListCard } from './components/checklist/AddListCard';
 import { mockData } from './data/mockData';
 
 function App() {
@@ -12,6 +13,7 @@ function App() {
           {mockData.lists.map((checkList) => (
             <CheckListCard key={checkList.slug} checkList={checkList} />
           ))}
+          <AddListCard />
         </div>
       </main>
     </div>
