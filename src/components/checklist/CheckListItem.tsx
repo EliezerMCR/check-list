@@ -4,15 +4,17 @@ import type { Item } from '../../types';
 
 interface CheckListItemProps {
   item: Item;
+  isChecked: boolean;
+  onToggle: () => void;
 }
 
-export function CheckListItem({ item }: CheckListItemProps) {
+export function CheckListItem({ item, isChecked, onToggle }: CheckListItemProps) {
   return (
     <div className="group flex items-center gap-3 py-2 px-2 -mx-2 rounded-lg hover:bg-slate-700/40 transition-colors duration-200">
-      <Checkbox checked={item.done} />
+      <Checkbox checked={isChecked} onChange={onToggle} />
       <span
         className={`flex-1 text-slate-100 transition-colors duration-200 ${
-          item.done ? 'line-through text-slate-500' : ''
+          isChecked ? 'line-through text-slate-500' : ''
         }`}
       >
         {item.message}
