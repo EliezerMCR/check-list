@@ -1,10 +1,11 @@
+import { useCallback } from 'react';
 import type { CheckList, Item } from '../types';
 import { generateSlug } from '../utils/slug';
 
 type SetLists = (value: CheckList[] | ((prev: CheckList[]) => CheckList[])) => void;
 
 export function useListActions(setLists: SetLists) {
-  const addList = (title: string): string => {
+  const addList = useCallback((title: string): string => {
     const trimmedTitle = title.trim();
     if (!trimmedTitle) return '';
 
@@ -25,9 +26,9 @@ export function useListActions(setLists: SetLists) {
 
     setLists((prev) => [...prev, newList]);
     return slug;
-  };
+  }, [setLists]);
 
-  const updateListTitle = (slug: string, newTitle: string) => {
+  const updateListTitle = useCallback((slug: string, newTitle: string) => {
     const trimmedTitle = newTitle.trim();
     if (!trimmedTitle) return;
 
@@ -36,11 +37,11 @@ export function useListActions(setLists: SetLists) {
         list.slug === slug ? { ...list, title: trimmedTitle } : list
       )
     );
-  };
+  }, [setLists]);
 
-  const deleteList = (slug: string) => {
+  const deleteList = useCallback((slug: string) => {
     setLists((prev) => prev.filter((list) => list.slug !== slug));
-  };
+  }, [setLists]);
 
   return {
     addList,

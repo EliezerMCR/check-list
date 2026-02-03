@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useCallback } from 'react';
 import type { CheckList } from '../../types';
 import { ProgressCounter } from './ProgressCounter';
 import { CheckListItem } from './CheckListItem';
@@ -26,19 +26,19 @@ export function CheckListCard({ checkList, isNew, onAnimationEnd }: CheckListCar
 
   const isOnlyNumeric = (text: string) => /^\d+$/.test(text.trim());
 
-  const isDuplicateTitle = (text: string) => {
+  const isDuplicateTitle = useCallback((text: string) => {
     const normalized = text.trim().toLowerCase();
     return lists.some(list =>
       list.slug !== checkList.slug && list.title.toLowerCase() === normalized
     );
-  };
+  }, [lists, checkList.slug]);
 
-  const isDuplicateItem = (text: string, excludeIndex?: number) => {
+  const isDuplicateItem = useCallback((text: string, excludeIndex?: number) => {
     const normalized = text.trim().toLowerCase();
     return checkList.items.some((item, index) =>
       index !== excludeIndex && item.message.toLowerCase() === normalized
     );
-  };
+  }, [checkList.items]);
 
   const completedCount = checkList.items.filter(item => item.done).length;
   const totalCount = checkList.items.length;
