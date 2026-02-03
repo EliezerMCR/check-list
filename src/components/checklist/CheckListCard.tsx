@@ -3,7 +3,7 @@ import type { CheckList } from '../../types';
 import { ProgressCounter } from './ProgressCounter';
 import { CheckListItem } from './CheckListItem';
 import { Input } from '../ui/Input';
-import { PencilIcon, TrashIcon, CheckIcon } from '../ui/icons';
+import { PencilIcon, TrashIcon, CheckIcon, PlusIcon } from '../ui/icons';
 import { useCheckList } from '../../hooks/useCheckList';
 
 interface CheckListCardProps {
@@ -13,26 +13,13 @@ interface CheckListCardProps {
 }
 
 export function CheckListCard({ checkList, isNew, onAnimationEnd }: CheckListCardProps) {
-  const { updateListTitle, deleteList } = useCheckList();
+  const { updateListTitle, deleteList, addItem, toggleItemDone, updateItemMessage, deleteItem } = useCheckList();
 
   const [isEditingTitle, setIsEditingTitle] = useState(false);
   const [editTitle, setEditTitle] = useState(checkList.title);
-  const [itemStates, setItemStates] = useState<Record<number, boolean>>({});
+  const [newItemText, setNewItemText] = useState('');
 
-  const getItemDone = (index: number, initialDone: boolean) => {
-    return itemStates[index] ?? initialDone;
-  };
-
-  const toggleItem = (index: number, initialDone: boolean) => {
-    setItemStates((prev) => ({
-      ...prev,
-      [index]: !(prev[index] ?? initialDone),
-    }));
-  };
-
-  const completedCount = checkList.items.filter(
-    (item, index) => getItemDone(index, item.done)
-  ).length;
+  const completedCount = checkList.items.filter(item => item.done).length;
   const totalCount = checkList.items.length;
 
   const sortedItems = useMemo(() => {
@@ -58,6 +45,19 @@ export function CheckListCard({ checkList, isNew, onAnimationEnd }: CheckListCar
     } else if (e.key === 'Escape') {
       setEditTitle(checkList.title);
       setIsEditingTitle(false);
+    }
+  };
+
+  const handleAddItem = () => {
+    if (newItemText.trim()) {
+      addItem(checkList.slug, newItemText);
+      setNewItemText('');
+    }
+  };
+
+  const handleAddItemKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      handleAddItem();
     }
   };
 
@@ -114,10 +114,30 @@ export function CheckListCard({ checkList, isNew, onAnimationEnd }: CheckListCar
           <CheckListItem
             key={`${checkList.slug}-${originalIndex}`}
             item={item}
-            isChecked={getItemDone(originalIndex, item.done)}
-            onToggle={() => toggleItem(originalIndex, item.done)}
+            isChecked={item.done}
+            onToggle={() => toggleItemDone(checkList.slug, originalIndex)}
+            onEdit={(newMessage) => updateItemMessage(checkList.slug, originalIndex, newMessage)}
+            onDelete={() => deleteItem(checkList.slug, originalIndex)}
           />
         ))}
+      </div>
+
+      <div className="border-t border-slate-700/50 pt-3 mt-2">
+        <div className="flex items-center gap-2">
+          <Input
+            value={newItemText}
+            onChange={(e) => setNewItemText(e.target.value)}
+            onKeyDown={handleAddItemKeyDown}
+            placeholder="Agregar nuevo item..."
+            className="flex-1 py-1 text-sm"
+          />
+          <button
+            onClick={handleAddItem}
+            className="p-1.5 text-slate-400 hover:text-emerald-400 transition-colors duration-200 rounded hover:bg-slate-700/50"
+          >
+            <PlusIcon className="w-4 h-4" />
+          </button>
+        </div>
       </div>
     </div>
   );
