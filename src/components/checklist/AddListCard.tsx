@@ -76,7 +76,7 @@ export function AddListCard({ onListCreated }: AddListCardProps) {
 
   if (isCreating) {
     return (
-      <div className="bg-slate-800/80 backdrop-blur-sm rounded-xl border border-slate-700/50 p-4 flex flex-col h-[340px] sm:h-[360px] lg:h-[380px]">
+      <div id="add-list-card" className="bg-slate-800/80 backdrop-blur-sm rounded-xl border border-slate-700/50 p-4 flex flex-col h-[340px] sm:h-[360px] lg:h-[380px]">
         <div className="flex-1 flex flex-col justify-center">
           <div className="mb-3">
             <Input
@@ -113,6 +113,7 @@ export function AddListCard({ onListCreated }: AddListCardProps) {
 
   return (
     <button
+      id="add-list-card"
       onClick={() => setIsCreating(true)}
       className="bg-slate-800/40 backdrop-blur-sm rounded-xl border border-dashed border-slate-700/50 p-4 transition-all duration-300 hover:border-slate-600 hover:bg-slate-800/60 flex flex-col items-center justify-center h-[340px] sm:h-[360px] lg:h-[380px] cursor-pointer group"
     >

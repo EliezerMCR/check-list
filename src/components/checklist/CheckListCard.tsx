@@ -4,6 +4,7 @@ import { ProgressCounter } from './ProgressCounter';
 import { CheckListItem } from './CheckListItem';
 import { Input } from '../ui/Input';
 import { PencilIcon, TrashIcon, CheckIcon, PlusIcon } from '../ui/icons';
+import { IconButton } from '../ui/IconButton';
 import { useCheckList } from '../../hooks/useCheckList';
 
 interface CheckListCardProps {
@@ -131,6 +132,7 @@ export function CheckListCard({ checkList, isNew, onAnimationEnd }: CheckListCar
 
   return (
     <div
+      id={`list-${checkList.slug}`}
       className={`group/card bg-slate-800/80 backdrop-blur-sm rounded-xl border border-slate-700/50 p-4 transition-all duration-300 hover:border-slate-600/50 hover:shadow-lg hover:shadow-slate-900/50 flex flex-col h-[340px] sm:h-[360px] lg:h-[380px] ${isNew ? 'animate-card-appear' : ''}`}
       onAnimationEnd={isNew ? onAnimationEnd : undefined}
     >
@@ -146,35 +148,34 @@ export function CheckListCard({ checkList, isNew, onAnimationEnd }: CheckListCar
               errorMessage={titleErrorMessage}
               autoFocus
             />
-            <button
+            <IconButton
+              icon={<CheckIcon className="w-4 h-4" />}
+              tooltip="save"
               onClick={handleSaveTitle}
-              className="p-1 text-emerald-400 hover:text-emerald-300 transition-colors duration-200 rounded"
-            >
-              <CheckIcon className="w-4 h-4" />
-            </button>
+              variant="save"
+            />
           </div>
         ) : (
           <>
             <h2 className="text-lg font-semibold text-slate-100 flex-1">
               {checkList.title}
             </h2>
-            <button
+            <IconButton
+              icon={<PencilIcon className="w-4 h-4" />}
+              tooltip="edit"
               onClick={() => {
                 setEditTitle(checkList.title);
                 setTitleError(false);
                 setTitleErrorMessage('');
                 setIsEditingTitle(true);
               }}
-              className="p-1 text-slate-400 hover:text-sky-400 opacity-0 group-hover/title:opacity-100 transition-all duration-200 rounded"
-            >
-              <PencilIcon className="w-4 h-4" />
-            </button>
-            <button
+            />
+            <IconButton
+              icon={<TrashIcon className="w-4 h-4" />}
+              tooltip="delete"
               onClick={() => deleteList(checkList.slug)}
-              className="p-1 text-slate-400 hover:text-red-400 opacity-0 group-hover/title:opacity-100 transition-all duration-200 rounded"
-            >
-              <TrashIcon className="w-4 h-4" />
-            </button>
+              variant="danger"
+            />
           </>
         )}
       </div>
@@ -206,12 +207,13 @@ export function CheckListCard({ checkList, isNew, onAnimationEnd }: CheckListCar
             error={newItemError}
             errorMessage={newItemErrorMessage}
           />
-          <button
+          <IconButton
+            icon={<PlusIcon className="w-4 h-4" />}
+            tooltip="add"
             onClick={handleAddItem}
-            className="p-1.5 text-slate-400 hover:text-emerald-400 transition-colors duration-200 rounded hover:bg-slate-700/50"
-          >
-            <PlusIcon className="w-4 h-4" />
-          </button>
+            variant="save"
+            className="hover:bg-slate-700/50"
+          />
         </div>
       </div>
     </div>

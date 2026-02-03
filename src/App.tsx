@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './App.css';
 import { Header } from './components/layout/Header';
 import { CheckListCard } from './components/checklist/CheckListCard';
@@ -13,6 +13,13 @@ function CheckListGrid() {
   const sortedLists = [...lists].sort(
     (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
   );
+
+  useEffect(() => {
+    if (newListSlug) {
+      const newCard = document.getElementById(`list-${newListSlug}`);
+      newCard?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }, [newListSlug]);
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
