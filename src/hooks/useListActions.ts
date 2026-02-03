@@ -4,9 +4,11 @@ import { generateSlug } from '../utils/slug';
 type SetLists = (value: CheckList[] | ((prev: CheckList[]) => CheckList[])) => void;
 
 export function useListActions(setLists: SetLists) {
-  const addList = (title: string) => {
+  const addList = (title: string): string => {
     const trimmedTitle = title.trim();
-    if (!trimmedTitle) return;
+    if (!trimmedTitle) return '';
+
+    const slug = generateSlug(trimmedTitle);
 
     const defaultItem: Item = {
       message: 'Nueva tarea',
@@ -15,13 +17,14 @@ export function useListActions(setLists: SetLists) {
     };
 
     const newList: CheckList = {
-      slug: generateSlug(trimmedTitle),
+      slug,
       title: trimmedTitle,
       items: [defaultItem],
       created_at: new Date(),
     };
 
     setLists((prev) => [...prev, newList]);
+    return slug;
   };
 
   const updateListTitle = (slug: string, newTitle: string) => {

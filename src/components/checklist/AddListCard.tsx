@@ -4,14 +4,21 @@ import { Input } from '../ui/Input';
 import { Button } from '../ui/Button';
 import { useCheckList } from '../../hooks/useCheckList';
 
-export function AddListCard() {
+interface AddListCardProps {
+  onListCreated?: (slug: string) => void;
+}
+
+export function AddListCard({ onListCreated }: AddListCardProps) {
   const [isCreating, setIsCreating] = useState(false);
   const [title, setTitle] = useState('');
   const { addList } = useCheckList();
 
   const handleSubmit = () => {
     if (title.trim()) {
-      addList(title);
+      const slug = addList(title);
+      if (slug) {
+        onListCreated?.(slug);
+      }
       setTitle('');
       setIsCreating(false);
     }

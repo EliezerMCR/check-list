@@ -2,7 +2,7 @@ import type { CheckList } from '../types';
 
 export interface CheckListContextType {
   lists: CheckList[];
-  addList: (title: string) => void;
+  addList: (title: string) => string;
   updateListTitle: (slug: string, newTitle: string) => void;
   deleteList: (slug: string) => void;
   addItem: (listSlug: string, message: string) => void;
