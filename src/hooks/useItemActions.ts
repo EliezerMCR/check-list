@@ -1,9 +1,10 @@
+import { useCallback } from 'react';
 import type { CheckList, Item } from '../types';
 
 type SetLists = (value: CheckList[] | ((prev: CheckList[]) => CheckList[])) => void;
 
 export function useItemActions(setLists: SetLists) {
-  const addItem = (listSlug: string, message: string) => {
+  const addItem = useCallback((listSlug: string, message: string) => {
     const trimmedMessage = message.trim();
     if (!trimmedMessage) return;
 
@@ -20,9 +21,9 @@ export function useItemActions(setLists: SetLists) {
           : list
       )
     );
-  };
+  }, [setLists]);
 
-  const updateItemMessage = (
+  const updateItemMessage = useCallback((
     listSlug: string,
     itemIndex: number,
     newMessage: string
@@ -43,9 +44,9 @@ export function useItemActions(setLists: SetLists) {
         return { ...list, items: newItems };
       })
     );
-  };
+  }, [setLists]);
 
-  const toggleItemDone = (listSlug: string, itemIndex: number) => {
+  const toggleItemDone = useCallback((listSlug: string, itemIndex: number) => {
     setLists((prev) =>
       prev.map((list) => {
         if (list.slug !== listSlug) return list;
@@ -59,9 +60,9 @@ export function useItemActions(setLists: SetLists) {
         return { ...list, items: newItems };
       })
     );
-  };
+  }, [setLists]);
 
-  const deleteItem = (listSlug: string, itemIndex: number) => {
+  const deleteItem = useCallback((listSlug: string, itemIndex: number) => {
     setLists((prev) =>
       prev.map((list) => {
         if (list.slug !== listSlug) return list;
@@ -69,7 +70,7 @@ export function useItemActions(setLists: SetLists) {
         return { ...list, items: newItems };
       })
     );
-  };
+  }, [setLists]);
 
   return {
     addItem,

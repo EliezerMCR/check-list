@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import type { CheckList } from '../types';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 import { useListActions } from '../hooks/useListActions';
@@ -11,7 +12,7 @@ export function CheckListProvider({ children }: { children: React.ReactNode }) {
   const { addItem, updateItemMessage, toggleItemDone, deleteItem } =
     useItemActions(setLists);
 
-  const value = {
+  const value = useMemo(() => ({
     lists,
     addList,
     updateListTitle,
@@ -20,7 +21,7 @@ export function CheckListProvider({ children }: { children: React.ReactNode }) {
     updateItemMessage,
     toggleItemDone,
     deleteItem,
-  };
+  }), [lists, addList, updateListTitle, deleteList, addItem, updateItemMessage, toggleItemDone, deleteItem]);
 
   return (
     <CheckListContext.Provider value={value}>

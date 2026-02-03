@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import { CheckIcon, DownloadIcon, PlusIcon } from '../ui/icons';
 import { IconButton } from '../ui/IconButton';
 import { useExport } from '../../hooks/useImportExport';
@@ -5,10 +6,10 @@ import { useExport } from '../../hooks/useImportExport';
 export function Header() {
   const { exportLists } = useExport();
 
-  const scrollToAddList = () => {
+  const scrollToAddList = useCallback(() => {
     const addListCard = document.getElementById('add-list-card');
     addListCard?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  };
+  }, []);
 
   return (
     <header className="sticky top-0 z-50 bg-slate-800/90 backdrop-blur-sm border-b border-slate-700/50">
