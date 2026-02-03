@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import './App.css';
 import { Header } from './components/layout/Header';
 import { CheckListCard } from './components/checklist/CheckListCard';
@@ -10,8 +10,11 @@ function CheckListGrid() {
   const { lists } = useCheckList();
   const [newListSlug, setNewListSlug] = useState<string | null>(null);
 
-  const sortedLists = [...lists].sort(
-    (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+  const sortedLists = useMemo(() =>
+    [...lists].sort(
+      (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+    ),
+    [lists]
   );
 
   useEffect(() => {

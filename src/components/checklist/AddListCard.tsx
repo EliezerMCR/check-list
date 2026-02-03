@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { PlusIcon, CheckIcon } from '../ui/icons';
 import { Input } from '../ui/Input';
 import { Button } from '../ui/Button';
@@ -17,10 +17,10 @@ export function AddListCard({ onListCreated }: AddListCardProps) {
 
   const isOnlyNumeric = (text: string) => /^\d+$/.test(text.trim());
 
-  const isDuplicateTitle = (text: string) => {
+  const isDuplicateTitle = useCallback((text: string) => {
     const normalized = text.trim().toLowerCase();
     return lists.some(list => list.title.toLowerCase() === normalized);
-  };
+  }, [lists]);
 
   const handleSubmit = () => {
     const trimmed = title.trim();
