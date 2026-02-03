@@ -14,3 +14,26 @@ export interface CheckList {
 export interface Data {
   lists: Array<CheckList>;
 }
+
+// Serialized versions for JSON export (dates as ISO strings)
+export interface SerializedItem {
+  message: string;
+  done: boolean;
+  created_at: string;
+}
+
+export interface SerializedCheckList {
+  slug: string;
+  title: string;
+  items: Array<SerializedItem>;
+  created_at: string;
+}
+
+export interface ExportedData {
+  version: string;
+  exportedAt: string;
+  app: string;
+  data: {
+    lists: SerializedCheckList[];
+  };
+}
