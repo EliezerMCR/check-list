@@ -8,9 +8,11 @@ import { useCheckList } from '../../hooks/useCheckList';
 
 interface CheckListCardProps {
   checkList: CheckList;
+  isNew?: boolean;
+  onAnimationEnd?: () => void;
 }
 
-export function CheckListCard({ checkList }: CheckListCardProps) {
+export function CheckListCard({ checkList, isNew, onAnimationEnd }: CheckListCardProps) {
   const { updateListTitle, deleteList } = useCheckList();
 
   const [isEditingTitle, setIsEditingTitle] = useState(false);
@@ -60,7 +62,10 @@ export function CheckListCard({ checkList }: CheckListCardProps) {
   };
 
   return (
-    <div className="group/card bg-slate-800/80 backdrop-blur-sm rounded-xl border border-slate-700/50 p-4 transition-all duration-300 hover:border-slate-600/50 hover:shadow-lg hover:shadow-slate-900/50 flex flex-col h-[280px] sm:h-[300px] lg:h-[320px]">
+    <div
+      className={`group/card bg-slate-800/80 backdrop-blur-sm rounded-xl border border-slate-700/50 p-4 transition-all duration-300 hover:border-slate-600/50 hover:shadow-lg hover:shadow-slate-900/50 flex flex-col h-[280px] sm:h-[300px] lg:h-[320px] ${isNew ? 'animate-card-appear' : ''}`}
+      onAnimationEnd={isNew ? onAnimationEnd : undefined}
+    >
       <div className="group/title flex items-center gap-2 mb-3">
         {isEditingTitle ? (
           <div className="flex items-center gap-2 flex-1">
