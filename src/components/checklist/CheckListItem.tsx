@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Checkbox } from '../ui/Checkbox';
 import { Input } from '../ui/Input';
 import { PencilIcon, TrashIcon, CheckIcon } from '../ui/icons';
+import { IconButton } from '../ui/IconButton';
 import type { Item } from '../../types';
 
 interface CheckListItemProps {
@@ -81,12 +82,12 @@ export function CheckListItem({ item, isChecked, onToggle, onEdit, onDelete, isD
           errorMessage={errorMessage}
           autoFocus
         />
-        <button
+        <IconButton
+          icon={<CheckIcon className="w-4 h-4" />}
+          tooltip="save"
           onClick={handleSave}
-          className="p-1 text-emerald-400 hover:text-emerald-300 transition-colors duration-200 rounded"
-        >
-          <CheckIcon className="w-4 h-4" />
-        </button>
+          variant="save"
+        />
       </div>
     );
   }
@@ -101,19 +102,20 @@ export function CheckListItem({ item, isChecked, onToggle, onEdit, onDelete, isD
       >
         {item.message}
       </span>
-      <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-        <button
+      <div className="flex items-center gap-1">
+        <IconButton
+          icon={<PencilIcon className="w-4 h-4" />}
+          tooltip="edit"
           onClick={handleStartEdit}
-          className="p-1 text-slate-400 hover:text-sky-400 transition-colors duration-200 rounded"
-        >
-          <PencilIcon className="w-4 h-4" />
-        </button>
-        <button
+          tooltipPosition='left'
+        />
+        <IconButton
+          icon={<TrashIcon className="w-4 h-4" />}
+          tooltip="delete"
           onClick={onDelete}
-          className="p-1 text-slate-400 hover:text-red-400 transition-colors duration-200 rounded"
-        >
-          <TrashIcon className="w-4 h-4" />
-        </button>
+          variant="danger"
+          tooltipPosition='left'
+        />
       </div>
     </div>
   );
