@@ -1,15 +1,13 @@
-import { useCallback } from 'react';
 import { CheckIcon, DownloadIcon, PlusIcon } from '../ui/icons';
 import { IconButton } from '../ui/IconButton';
 import { useExport } from '../../hooks/useImportExport';
 
-export function Header() {
-  const { exportLists } = useExport();
+interface HeaderProps {
+  onScrollToAddList: () => void;
+}
 
-  const scrollToAddList = useCallback(() => {
-    const addListCard = document.getElementById('add-list-card');
-    addListCard?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  }, []);
+export function Header({ onScrollToAddList }: HeaderProps) {
+  const { exportLists } = useExport();
 
   return (
     <header className="sticky top-0 z-50 bg-slate-800/90 backdrop-blur-sm border-b border-slate-700/50">
@@ -26,7 +24,7 @@ export function Header() {
               <IconButton
                 icon={<PlusIcon className="w-5 h-5" />}
                 tooltip="newList"
-                onClick={scrollToAddList}
+                onClick={onScrollToAddList}
                 className="p-2 hover:bg-slate-700/50 rounded-lg"
                 tooltipPosition="bottom"
               />

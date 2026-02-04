@@ -4,18 +4,21 @@ import { Input } from '../ui/Input';
 import { Button } from '../ui/Button';
 import { useCheckList } from '../../hooks/useCheckList';
 
+const ONLY_NUMERIC_REGEX = /^\d+$/;
+
 interface AddListCardProps {
+  ref?: React.Ref<HTMLDivElement | HTMLButtonElement>;
   onListCreated?: (slug: string) => void;
 }
 
-export function AddListCard({ onListCreated }: AddListCardProps) {
+export function AddListCard({ ref, onListCreated }: AddListCardProps) {
   const [isCreating, setIsCreating] = useState(false);
   const [title, setTitle] = useState('');
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const { addList, lists } = useCheckList();
 
-  const isOnlyNumeric = (text: string) => /^\d+$/.test(text.trim());
+  const isOnlyNumeric = (text: string) => ONLY_NUMERIC_REGEX.test(text.trim());
 
   const isDuplicateTitle = useCallback((text: string) => {
     const normalized = text.trim().toLowerCase();
@@ -76,7 +79,7 @@ export function AddListCard({ onListCreated }: AddListCardProps) {
 
   if (isCreating) {
     return (
-      <div id="add-list-card" className="bg-slate-800/80 backdrop-blur-sm rounded-xl border border-slate-700/50 p-4 flex flex-col h-[340px] sm:h-[360px] lg:h-[380px]">
+      <div ref={ref as React.Ref<HTMLDivElement>} className="bg-slate-800/80 backdrop-blur-sm rounded-xl border border-slate-700/50 p-4 flex flex-col h-[340px] sm:h-[360px] lg:h-[380px]">
         <div className="flex-1 flex flex-col justify-center">
           <div className="mb-3">
             <Input
@@ -113,7 +116,7 @@ export function AddListCard({ onListCreated }: AddListCardProps) {
 
   return (
     <button
-      id="add-list-card"
+      ref={ref as React.Ref<HTMLButtonElement>}
       onClick={() => setIsCreating(true)}
       className="bg-slate-800/40 backdrop-blur-sm rounded-xl border border-dashed border-slate-700/50 p-4 transition-all duration-300 hover:border-slate-600 hover:bg-slate-800/60 flex flex-col items-center justify-center h-[340px] sm:h-[360px] lg:h-[380px] cursor-pointer group"
     >
