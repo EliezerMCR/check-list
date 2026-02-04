@@ -7,13 +7,16 @@ import { PencilIcon, TrashIcon, CheckIcon, PlusIcon } from '../ui/icons';
 import { IconButton } from '../ui/IconButton';
 import { useCheckList } from '../../hooks/useCheckList';
 
+const ONLY_NUMERIC_REGEX = /^\d+$/;
+
 interface CheckListCardProps {
+  ref?: React.Ref<HTMLDivElement>;
   checkList: CheckList;
   isNew?: boolean;
   onAnimationEnd?: () => void;
 }
 
-export function CheckListCard({ checkList, isNew, onAnimationEnd }: CheckListCardProps) {
+export function CheckListCard({ ref, checkList, isNew, onAnimationEnd }: CheckListCardProps) {
   const { updateListTitle, deleteList, addItem, toggleItemDone, updateItemMessage, deleteItem, lists } = useCheckList();
 
   const [isEditingTitle, setIsEditingTitle] = useState(false);
@@ -24,7 +27,7 @@ export function CheckListCard({ checkList, isNew, onAnimationEnd }: CheckListCar
   const [newItemError, setNewItemError] = useState(false);
   const [newItemErrorMessage, setNewItemErrorMessage] = useState('');
 
-  const isOnlyNumeric = (text: string) => /^\d+$/.test(text.trim());
+  const isOnlyNumeric = (text: string) => ONLY_NUMERIC_REGEX.test(text.trim());
 
   const isDuplicateTitle = useCallback((text: string) => {
     const normalized = text.trim().toLowerCase();
@@ -132,7 +135,7 @@ export function CheckListCard({ checkList, isNew, onAnimationEnd }: CheckListCar
 
   return (
     <div
-      id={`list-${checkList.slug}`}
+      ref={ref}
       className={`group/card bg-slate-800/80 backdrop-blur-sm rounded-xl border border-slate-700/50 p-4 transition-all duration-300 hover:border-slate-600/50 hover:shadow-lg hover:shadow-slate-900/50 flex flex-col h-[340px] sm:h-[360px] lg:h-[380px] ${isNew ? 'animate-card-appear' : ''}`}
       onAnimationEnd={isNew ? onAnimationEnd : undefined}
     >
